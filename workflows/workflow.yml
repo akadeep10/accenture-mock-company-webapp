@@ -1,0 +1,32 @@
+name: Jenkins CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17'
+        
+      - name: Set up Gradle
+        uses: gradle/wrapper-validation-action@v1
+        with:
+          gradle-version: '7.6'
+
+      - name: Build with Gradle
+        run: ./gradlew assemble
+        
+      - name: Run Tests
+        run: ./gradlew test
